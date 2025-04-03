@@ -25,7 +25,7 @@ public class DatabaseUtils {
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
                 if (data.length < 7) {
-                    continue; // Saltar esta línea si no tiene el formato correcto
+                    continue;
                 }
                 DoctorDTO doctor = new DoctorDTO();
                 doctor.setNombre(data[0]);
@@ -72,13 +72,13 @@ public class DatabaseUtils {
                 DoctorDTO doctor = buscarDoctorPorCodigo(data[0]);
                 if (doctor == null) {
                     System.err.println("Doctor no encontrado: " + data[0]);
-                    continue; // Saltar esta cita si el doctor no se encuentra
+                    continue;
                 }
                 cita.setDoctor(doctor);
                 PacienteDTO paciente = buscarPacientePorDui(data[1]);
                 if (paciente == null) {
                     System.err.println("Paciente no encontrado: " + data[1]);
-                    continue; // Saltar esta cita si el paciente no se encuentra
+                    continue;
                 }
                 cita.setPaciente(paciente);
                 cita.setEspecialidad(data[2]);
@@ -118,7 +118,7 @@ public class DatabaseUtils {
                     DateUtils.formatDate(doctor.getFechaNacimiento()) + "," +
                     DateUtils.formatDate(doctor.getFechaReclutamiento()) + "," +
                     doctor.getEspecialidad() + "," + doctor.getCodigo());
-            bw.newLine(); // Asegura que cada doctor se escriba en una nueva línea
+            bw.newLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -128,7 +128,7 @@ public class DatabaseUtils {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(PACIENTES_FILE, true))) {
             bw.write(paciente.getNombre() + "," + paciente.getApellido() + "," + paciente.getDui() + "," +
                     DateUtils.formatDate(paciente.getFechaNacimiento()));
-            bw.newLine(); // Asegura que cada paciente se escriba en una nueva línea
+            bw.newLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -139,7 +139,7 @@ public class DatabaseUtils {
             bw.write(cita.getDoctor().getCodigo() + "," + cita.getPaciente().getDui() + "," +
                     cita.getEspecialidad() + "," + DateUtils.formatDate(cita.getFecha()) + "," +
                     cita.isAtendido());
-            bw.newLine(); // Asegura que cada cita se escriba en una nueva línea
+            bw.newLine(); 
         } catch (IOException e) {
             e.printStackTrace();
         }
