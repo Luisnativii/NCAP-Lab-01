@@ -123,6 +123,13 @@ public class Main {
         System.out.println("Paciente agregado exitosamente.");
     }
 
+    // src/Main.java
+    private static final String[] ESPECIALIDADES = {
+            "Cardiología", "Neurología", "Pediatría", "Oncología", "Ortopedia",
+            "Endocrinología", "Reumatología", "Neumología", "Infectología"
+    };
+
+
     private static void agregarDoctor(Scanner scanner) {
         System.out.print("Nombre: ");
         String nombre = scanner.nextLine();
@@ -146,8 +153,17 @@ public class Main {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        System.out.print("Especialidad: ");
-        String especialidad = scanner.nextLine();
+
+        // Submenú para seleccionar especialidad
+        System.out.println("Seleccione una especialidad:");
+        for (int i = 0; i < ESPECIALIDADES.length; i++) {
+            System.out.println((i + 1) + ". " + ESPECIALIDADES[i]);
+        }
+        System.out.print("Opción: ");
+        int opcionEspecialidad = scanner.nextInt();
+        scanner.nextLine(); // Consumir el salto de línea
+        String especialidad = ESPECIALIDADES[opcionEspecialidad - 1];
+
         System.out.print("Código: ");
         String codigo = scanner.nextLine();
 
