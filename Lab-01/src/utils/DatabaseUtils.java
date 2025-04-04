@@ -62,28 +62,44 @@ public class DatabaseUtils {
         return pacientes;
     }
 
+    public static DoctorDTO buscarDoctorPorEspecialidad(String especialidad) {
+        List<DoctorDTO> doctores = leerDoctores();
+        for (DoctorDTO doctor : doctores) {
+            if (doctor.getEspecialidad().equalsIgnoreCase(especialidad)) {
+                return doctor;
+            }
+        }
+        return null;
+    }
+
+
+
     public static List<CitaDTO> leerCitas() {
         List<CitaDTO> citas = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(CITAS_FILE))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
+                if (data.length < 5) {
+                    continue; // Saltar esta línea si no tiene el formato correcto
+                }
                 CitaDTO cita = new CitaDTO();
                 DoctorDTO doctor = buscarDoctorPorCodigo(data[0]);
                 if (doctor == null) {
                     System.err.println("Doctor no encontrado: " + data[0]);
-                    continue;
+                    continue; // Saltar esta cita si el doctor no se encuentra
                 }
                 cita.setDoctor(doctor);
                 PacienteDTO paciente = buscarPacientePorDui(data[1]);
                 if (paciente == null) {
                     System.err.println("Paciente no encontrado: " + data[1]);
-                    continue;
+                    continue; // Saltar esta cita si el paciente no se encuentra
                 }
                 cita.setPaciente(paciente);
                 cita.setEspecialidad(data[2]);
                 cita.setFecha(DateUtils.parseDate(data[3]));
                 cita.setAtendido(Boolean.parseBoolean(data[4]));
+                cita.setInformacionCompletaPaciente(paciente.getNombre() + " " + paciente.getApellido() + ", DUI: " + paciente.getDui() + ", Fecha de Nacimiento: " + DateUtils.formatDate(paciente.getFechaNacimiento()));
                 citas.add(cita);
             }
         } catch (IOException | ParseException e) {

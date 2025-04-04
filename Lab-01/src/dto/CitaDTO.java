@@ -9,6 +9,7 @@ public class CitaDTO {
     private String especialidad;
     private Date fecha;
     private boolean atendido;
+    private String informacionCompletaPaciente; // Nueva variable
 
     // Getters y Setters
     public DoctorDTO getDoctor() {
@@ -49,5 +50,13 @@ public class CitaDTO {
 
     public void setAtendido(boolean atendido) {
         this.atendido = atendido;
+    }
+
+    public String getInformacionCompletaPaciente() {
+        return informacionCompletaPaciente;
+    }
+
+    public void setInformacionCompletaPaciente(String informacionCompletaPaciente) {
+        this.informacionCompletaPaciente = informacionCompletaPaciente;
     }
 }
