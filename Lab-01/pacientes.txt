@@ -10,3 +10,7 @@ Jhin,Virtuoso,90123456-7,09/09/1983
 Katarina,Sinister,01234567-8,10/10/1987
 katrina,ruboloba,06531192-1,07/07/1990
 katrinaaa,ruboloba,06531192-2,09/09/1990
+elias ,ramsey,00000001-0,09/09/2010
+ximena,chicas,00000002-0,09/09/2010
+lopez,ramsey,06531192-9,09/09/2003
+marc,cooo,00000003-0,09/09/2010
