@@ -13,6 +13,9 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        //Valor asignado de cantidad de doctores existentes
+        Integer n = 9;
+
         while (true) {
             System.out.println("Sistema de Citas Médicas");
             System.out.println("1. Listar todas las citas");
@@ -36,7 +39,9 @@ public class Main {
                     agregarPaciente(scanner);
                     break;
                 case 4:
-                    agregarDoctor(scanner);
+                    agregarDoctor(scanner, n);
+                    //Habiendo agregado un doctor, aumentamos la cuenta
+                    n++;
                     break;
                 case 5:
                     listarCitasPorDoctor(scanner);
@@ -171,7 +176,7 @@ public class Main {
     };
 
 
-    private static void agregarDoctor(Scanner scanner) {
+    private static void agregarDoctor(Scanner scanner, Integer n) {
         System.out.print("Nombre: ");
         String nombre = scanner.nextLine();
         System.out.print("Apellido: ");
@@ -206,7 +211,9 @@ public class Main {
         String especialidad = ESPECIALIDADES[opcionEspecialidad - 1];
 
         System.out.print("Código: ");
-        String codigo = scanner.nextLine();
+        String codigo = generarCodigoDoctor(n);
+        //Feedback del codigo de doctoir asignado
+        System.out.println(codigo);
 
         DoctorDTO doctor = new DoctorDTO();
         doctor.setNombre(nombre);
@@ -219,6 +226,22 @@ public class Main {
 
         DatabaseUtils.guardarDoctor(doctor);
         System.out.println("Doctor agregado exitosamente.");
+    }
+
+    public static String generarCodigoDoctor(Integer count){
+        //Creamos dos arreglos unicamente para almacenar los valores a utilizar
+        Integer[] n = new Integer[5];
+        Character[] s = new Character[5];
+        for (int i = 0; i < 5; i++) {
+            n[i] = Math.floorDiv(count, (int) Math.pow(10,4-i));
+            count = (int) (count - n[i]*Math.pow(10,4-i));
+            //Si el valor esta en una posicion par en la cuenta, convertir a caracter.
+            if(i%2 != 0){
+                s[i] = (char) ('A' + n[i]);
+            }
+        }
+        //Devolver una string en base al format dado anteroirmente
+        return String.format("ZNH-%d%s%d-MD-%s%d", n[0], s[1], n[2], s[3], n[4]);
     }
 
     private static void listarCitasPorDoctor(Scanner scanner) {
