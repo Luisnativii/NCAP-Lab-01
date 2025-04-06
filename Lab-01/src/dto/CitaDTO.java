@@ -1,13 +1,14 @@
 // src/dto/CitaDTO.java
 package dto;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class CitaDTO {
     private DoctorDTO doctor;
     private PacienteDTO paciente;
     private String especialidad;
-    private Date fecha;
+    private LocalDateTime fecha;
     private boolean atendido;
     private String informacionCompletaPaciente; // Nueva variable
 
@@ -36,11 +37,11 @@ public class CitaDTO {
         this.especialidad = especialidad;
     }
 
-    public Date getFecha() {
+    public LocalDateTime getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
 

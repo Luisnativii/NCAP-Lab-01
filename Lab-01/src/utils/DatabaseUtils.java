@@ -10,7 +10,12 @@ import entity.Cita;
 
 import java.io.*;
 import java.text.ParseException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DatabaseUtils {
@@ -95,14 +100,18 @@ public class DatabaseUtils {
                     System.err.println("Paciente no encontrado: " + data[1]);
                     continue; // Saltar esta cita si el paciente no se encuentra
                 }
+
+                DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                LocalDateTime fecha = LocalDateTime.parse(data[3], formato);
+
                 cita.setPaciente(paciente);
                 cita.setEspecialidad(data[2]);
-                cita.setFecha(DateUtils.parseDate(data[3]));
+                cita.setFecha(fecha);
                 cita.setAtendido(Boolean.parseBoolean(data[4]));
                 cita.setInformacionCompletaPaciente(paciente.getNombre() + " " + paciente.getApellido() + ", DUI: " + paciente.getDui() + ", Fecha de Nacimiento: " + DateUtils.formatDate(paciente.getFechaNacimiento()));
                 citas.add(cita);
             }
-        } catch (IOException | ParseException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return citas;
@@ -151,9 +160,10 @@ public class DatabaseUtils {
     }
 
     public static void guardarCita(CitaDTO cita) {
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(CITAS_FILE, true))) {
             bw.write(cita.getDoctor().getCodigo() + "," + cita.getPaciente().getDui() + "," +
-                    cita.getEspecialidad() + "," + DateUtils.formatDate(cita.getFecha()) + "," +
+                    cita.getEspecialidad() + "," + LocalDateTime.from(cita.getFecha()).format(formato) + "," +
                     cita.isAtendido());
             bw.newLine(); 
         } catch (IOException e) {

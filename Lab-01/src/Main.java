@@ -4,7 +4,13 @@ import dto.CitaDTO;
 import utils.DatabaseUtils;
 import utils.DateUtils;
 
+import java.sql.Time;
 import java.text.ParseException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +46,7 @@ public class Main {
                     break;
                 case 4:
                     agregarDoctor(scanner, n);
-                    //Habiendo agregado un doctor, aumentamos la cuenta
+                    //Habiendo agregado un doctor, aumentamos la cuenta de doctores
                     n++;
                     break;
                 case 5:
@@ -58,13 +64,65 @@ public class Main {
     private static void listarCitas() {
         List<CitaDTO> citas = DatabaseUtils.leerCitas();
         for (CitaDTO cita : citas) {
-            System.out.println("Doctor: " + cita.getDoctor().getCodigo() + ", Paciente: " + cita.getInformacionCompletaPaciente() +
-                    ", Especialidad: " + cita.getEspecialidad() + ", Fecha: " + DateUtils.formatDate(cita.getFecha()) +
+            System.out.println("Doctor: " + cita.getDoctor().getCodigo() +
+                    ", Paciente: " + cita.getInformacionCompletaPaciente() +
+                    ", Especialidad: " + cita.getEspecialidad() +
+                    ", Fecha: " + cita.getFecha() +
                     ", Atendido: " + cita.isAtendido());
         }
     }
 
     private static void agendarCita(Scanner scanner) {
+        // 2 Casos al crear cita
+        System.out.println("1. Agregar cita ahora        2. Agregar cita a partir de mañana");
+        int tipo = scanner.nextInt();
+        if (tipo == 1) {citaEnMomento(scanner);}
+        else if (tipo == 2) {citaAFuturo(scanner);}
+        else {System.out.println("Opcion no valida. Intente de nuevo.");}
+    }
+
+    private static void citaEnMomento(Scanner scanner) {
+        String a = scanner.nextLine();
+        System.out.print("DUI del Paciente: ");
+        String duiPaciente = scanner.nextLine();
+        PacienteDTO paciente = DatabaseUtils.buscarPacientePorDui(duiPaciente);
+        if (paciente == null) {
+            System.out.println("Paciente no encontrado.");
+            return;
+        }
+        // Submenú para seleccionar especialidad
+        System.out.println("Seleccione una especialidad:");
+        for (int i = 0; i < ESPECIALIDADES.length; i++) {
+            System.out.println((i + 1) + ". " + ESPECIALIDADES[i]);
+        }
+        System.out.print("Opción: ");
+        int opcionEspecialidad = scanner.nextInt();
+        scanner.nextLine(); // Consumir el salto de línea
+        String especialidad = ESPECIALIDADES[opcionEspecialidad - 1];
+
+        // Buscar un doctor de la especialidad seleccionada
+        DoctorDTO doctor = DatabaseUtils.buscarDoctorPorEspecialidad(especialidad);
+        if (doctor == null) {
+            System.out.println("No se encontró un doctor con la especialidad seleccionada.");
+            return;
+        }
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime fecha = LocalDateTime.parse(LocalDateTime.now().format(formato), formato);
+
+        CitaDTO cita = new CitaDTO();
+        cita.setDoctor(doctor);
+        cita.setPaciente(paciente);
+        cita.setEspecialidad(especialidad);
+        cita.setFecha(fecha);
+        //Asumiendo que el paciente esta presente al momento de realzar la cita
+        cita.setAtendido(true);
+
+        DatabaseUtils.guardarCita(cita);
+        System.out.println("Cita agendada exitosamente.");
+    }
+
+    private static void citaAFuturo(Scanner scanner) {
+        String a = scanner.nextLine();
         System.out.print("DUI del Paciente: ");
         String duiPaciente = scanner.nextLine();
         PacienteDTO paciente = DatabaseUtils.buscarPacientePorDui(duiPaciente);
@@ -92,12 +150,14 @@ public class Main {
 
         System.out.print("Fecha de la Cita (dd/MM/yyyy): ");
         String fechaStr = scanner.nextLine();
-        Date fecha = null;
-        try {
-            fecha = DateUtils.parseDate(fechaStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        System.out.println("1. 8am   2. 9am   3. 10am   4. 11am   5. 12am   6. 1pm   7. 2pm   8. 3pm    9. 4pm");
+        System.out.print("Hora de la Cita: ");
+        String valHora = scanner.nextLine();
+        String horaStr = String.valueOf(Integer.parseInt(valHora)+7) + ":00:00";
+        horaStr = Time.valueOf(horaStr).toString();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("d/M/yyyy HH:mm:ss");
+        LocalDateTime fecha = LocalDateTime.parse(fechaStr + " " + horaStr, formato);
+
 
         CitaDTO cita = new CitaDTO();
         cita.setDoctor(doctor);
@@ -252,7 +312,7 @@ public class Main {
         for (CitaDTO cita : citas) {
             if (cita.getDoctor().getCodigo().equals(codigoDoctor)) {
                 System.out.println("Paciente: " + cita.getPaciente().getDui() + ", Especialidad: " + cita.getEspecialidad() +
-                        ", Fecha: " + DateUtils.formatDate(cita.getFecha()) + ", Atendido: " + cita.isAtendido());
+                        ", Fecha: " + cita.getFecha() + ", Atendido: " + cita.isAtendido());
                 citasEncontradas = true;
             }
         }
