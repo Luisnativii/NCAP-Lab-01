@@ -1,4 +1,3 @@
-// src/utils/DatabaseUtils.java
 package utils;
 
 import dto.DoctorDTO;
@@ -19,9 +18,10 @@ import java.util.Date;
 import java.util.List;
 
 public class DatabaseUtils {
-    private static final String DOCTORES_FILE = "doctores.txt";
-    private static final String PACIENTES_FILE = "pacientes.txt";
-    private static final String CITAS_FILE = "citas.txt";
+    private static final String BASE_PATH = System.getProperty("user.dir") + "/NCAP-Lab-01/Lab-01/";
+    private static final String DOCTORES_FILE = BASE_PATH + "doctores.txt";
+    private static final String PACIENTES_FILE = BASE_PATH + "pacientes.txt";
+    private static final String CITAS_FILE = BASE_PATH + "citas.txt";
 
     public static List<DoctorDTO> leerDoctores() {
         List<DoctorDTO> doctores = new ArrayList<>();

@@ -1,4 +1,3 @@
-// src/entity/Cita.java
 package entity;
 
 import java.util.Date;
@@ -10,7 +9,7 @@ public class Cita {
     private Date fecha;
     private boolean atendido;
 
-    // Getters y Setters
+
     public Doctor getDoctor() {
         return doctor;
     }

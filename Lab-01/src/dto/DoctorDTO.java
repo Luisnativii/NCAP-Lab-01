@@ -1,4 +1,3 @@
-// src/dto/DoctorDTO.java
 package dto;
 
 import java.util.Date;
@@ -12,7 +11,7 @@ public class DoctorDTO {
     private String especialidad;
     private String codigo;
 
-    // Getters y Setters
+
     public String getNombre() {
         return nombre;
     }

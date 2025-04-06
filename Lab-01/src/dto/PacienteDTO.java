@@ -1,4 +1,3 @@
-// src/dto/PacienteDTO.java
 package dto;
 
 import java.util.Date;
@@ -9,7 +8,7 @@ public class PacienteDTO {
     private String dui;
     private Date fechaNacimiento;
 
-    // Getters y Setters
+
     public String getNombre() {
         return nombre;
     }

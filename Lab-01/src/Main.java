@@ -19,7 +19,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        //Valor asignado de cantidad de doctores existentes
+
         Integer n = 9;
 
         while (true) {
@@ -29,7 +29,8 @@ public class Main {
             System.out.println("3. Agregar nuevo paciente");
             System.out.println("4. Agregar nuevo doctor");
             System.out.println("5. Listar citas por doctor");
-            System.out.println("6. Salir");
+            System.out.println("6. Mundo Salva vidas");
+            System.out.println("7. Salir");
             System.out.print("Seleccione una opción: ");
             int opcion = scanner.nextInt();
             scanner.nextLine();
@@ -46,13 +47,15 @@ public class Main {
                     break;
                 case 4:
                     agregarDoctor(scanner, n);
-                    //Habiendo agregado un doctor, aumentamos la cuenta de doctores
                     n++;
                     break;
                 case 5:
                     listarCitasPorDoctor(scanner);
                     break;
                 case 6:
+                    System.out.println("Este botón se ve bonito pero no hace nada. Bienvenido a la Grieta del Invocador");
+                    break;
+                case 7:
                     System.out.println("Saliendo del sistema...");
                     return;
                 default:
@@ -229,7 +232,7 @@ public class Main {
         return String.format("000000%02d-0", maxDui + 1);
     }
 
-    // src/Main.java
+
     private static final String[] ESPECIALIDADES = {
             "Cardiología", "Neurología", "Pediatría", "Oncología", "Ortopedia",
             "Endocrinología", "Reumatología", "Neumología", "Infectología", "General"

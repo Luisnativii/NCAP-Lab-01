@@ -1,4 +1,3 @@
-// src/entity/Paciente.java
 package entity;
 
 import java.util.Date;
@@ -9,7 +8,7 @@ public class Paciente {
     private String dui;
     private Date fechaNacimiento;
 
-    // Getters y Setters
+
     public String getNombre() {
         return nombre;
     }
